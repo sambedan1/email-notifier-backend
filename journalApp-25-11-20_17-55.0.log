@@ -1,0 +1,10 @@
+25-11-20 17:55:03.937 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
+25-11-20 17:55:03.939 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete 
+25-11-20 17:55:03.945 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete 
+25-11-20 17:55:03.947 [SpringApplicationShutdownHook] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+25-11-20 17:55:03.947 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutting down. 
+25-11-20 17:55:03.951 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
+25-11-20 17:55:03.951 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutdown complete. 
+25-11-20 17:55:03.951 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+25-11-20 17:55:03.954 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated... 
+25-11-20 17:55:03.960 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed. 
