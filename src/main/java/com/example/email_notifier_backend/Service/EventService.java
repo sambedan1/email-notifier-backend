@@ -1,21 +1,23 @@
 package com.example.email_notifier_backend.Service;
 
-import com.example.email_notifier_backend.Dto.EventDTO;
+import com.example.email_notifier_backend.Dto.CreateEventDTO;
+
+import com.example.email_notifier_backend.Dto.EventResponseDTO;
 
 import java.util.List;
 
 public interface EventService {
-    EventDTO create(EventDTO dto);
+    EventResponseDTO create(Long id,CreateEventDTO dto);
 
-    EventDTO update(Long id, EventDTO dto);
+    EventResponseDTO update(Long id,CreateEventDTO dto);
 
-    EventDTO getById(Long id);
+    EventResponseDTO getById(Long id);
 
-    List<EventDTO> getUserEvents(Long userId);
+    List<EventResponseDTO> getUserEvents(Long userId);
 
-    List<EventDTO> getAllEvents();
+    List<EventResponseDTO> getAllEvents();
 
-    EventDTO approveEvent(Long id);
+    EventResponseDTO approveEvent(Long id);
 
-    EventDTO rejectEvent(Long id);
+    EventResponseDTO rejectEvent(Long id);
 }

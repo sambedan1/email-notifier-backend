@@ -1,8 +1,15 @@
 package com.example.email_notifier_backend.Controller;
 
+import com.example.email_notifier_backend.Dto.AuthRequestDTO;
+import com.example.email_notifier_backend.Dto.AuthResponseDTO;
 import com.example.email_notifier_backend.Dto.UserDTO;
+import com.example.email_notifier_backend.Entity.User;
+import com.example.email_notifier_backend.Repository.UserRepository;
+import com.example.email_notifier_backend.Security.JwtUtil;
 import com.example.email_notifier_backend.Service.UserService;
+import com.example.email_notifier_backend.util.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,26 +17,33 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final UserRepository userRepo;
+    private final PasswordEncoder encoder;
+    private final JwtUtil jwt;
 
-    @PostMapping("/register")
-    public UserDTO register(@RequestBody UserDTO dto) {
-        return userService.register(dto);
+    @PostMapping("/signup")
+    public AuthResponseDTO signup(@RequestBody AuthRequestDTO dto){
+        if(userRepo.findByEmail(dto.getEmail()).isPresent()){
+            throw new RuntimeException("Email already exists");
+        }
+        User u = User.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .password(encoder.encode(dto.getPassword()))
+                .role(Role.ROLE_USER)
+                .build();
+        userRepo.save(u);
+        String token = jwt.generateToken(u.getEmail());
+        return new AuthResponseDTO(token,u.getName(),u.getEmail());
     }
 
-    @PostMapping("/login")
-    public UserDTO login(@RequestBody UserDTO dto) {
-        return userService.login(dto.getEmail(), dto.getPassword());
-    }
-
-    @PostMapping("/password-reset/request")
-    public String generateReset(@RequestBody UserDTO dto) {
-        return userService.generatePasswordResetToken(dto.getEmail());
-    }
-
-    @PostMapping("/password-reset/confirm")
-    public String resetPassword(@RequestParam String token,
-                                @RequestParam String newPassword) {
-        return userService.resetPassword(token, newPassword);
+    @PostMapping("/signin")
+    public  String signin(@RequestBody AuthRequestDTO req) {
+        var user = userRepo.findByEmail(req.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid creds"));
+        if(!encoder.matches(req.getPassword(), user.getPassword()))
+            throw new RuntimeException("Invalid creds");
+        String token = jwt.generateToken(user.getEmail());
+        return "Sign-in successful";
     }
 }

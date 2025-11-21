@@ -1,8 +1,10 @@
 package com.example.email_notifier_backend.Controller;
 
-import com.example.email_notifier_backend.Dto.EventDTO;
+import com.example.email_notifier_backend.Dto.CreateEventDTO;
+import com.example.email_notifier_backend.Dto.EventResponseDTO;
 import com.example.email_notifier_backend.Service.EventService;
 
+import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,22 +18,22 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public EventDTO createEvent(@RequestBody EventDTO dto) {
-        return eventService.create(dto);
+    public EventResponseDTO createEvent( @RequestParam Long userId,@RequestBody CreateEventDTO dto) {
+        return eventService.create(userId,dto);
     }
 
     @PutMapping("/{id}")
-    public EventDTO updateEvent(@PathVariable Long id, @RequestBody EventDTO dto) {
+    public EventResponseDTO updateEvent(@PathVariable Long id, @RequestBody CreateEventDTO dto) {
         return eventService.update(id, dto);
     }
 
     @GetMapping("/{id}")
-    public EventDTO getEvent(@PathVariable Long id) {
+    public EventResponseDTO getEvent(@PathVariable Long id) {
         return eventService.getById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public List<EventDTO> getUserEvents(@PathVariable Long userId) {
+    public List<EventResponseDTO> getUserEvents(@PathVariable Long userId) {
         return eventService.getUserEvents(userId);
     }
 }

@@ -27,8 +27,4 @@ public class UserController {
 //        return userService.create(dto);
 //    }
 
-//    @GetMapping()
-//    public String getName(){
-//        return "satyam";
-//    }
 }

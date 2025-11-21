@@ -1,6 +1,7 @@
 package com.example.email_notifier_backend.Service.ServiceImpli;
 
-import com.example.email_notifier_backend.Dto.EventDTO;
+import com.example.email_notifier_backend.Dto.CreateEventDTO;
+import com.example.email_notifier_backend.Dto.EventResponseDTO;
 import com.example.email_notifier_backend.Entity.Events;
 import com.example.email_notifier_backend.Entity.User;
 import com.example.email_notifier_backend.Repository.EventsRepository;
@@ -25,13 +26,13 @@ public class EventServiceImpli implements EventService {
 
 
     @Override
-    public EventDTO create(EventDTO dto) {
+    public EventResponseDTO create(Long id,CreateEventDTO dto) {
 
         // Convert DTO → Entity
         Events event = mapper.map(dto, Events.class);
 
         // Fetch user from database
-        User user = userRepo.findById(dto.getUserId())
+        User user = userRepo.findById((id))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         event.setUser(user);
@@ -41,68 +42,68 @@ public class EventServiceImpli implements EventService {
         event = eventRepo.save(event);
 
         // Convert Entity → DTO
-        return mapper.map(event, EventDTO.class);
+        return mapper.map(event, EventResponseDTO.class);
     }
 
     @Override
-    public EventDTO update(Long id, EventDTO dto) {
+    public EventResponseDTO update(Long id, CreateEventDTO dto) {
         Events event = eventRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         // Update allowed fields
         if (dto.getTitle() != null) event.setTitle(dto.getTitle());
-        if (dto.getDate() != null) event.setDate(dto.getDate());
-        if (dto.getTime() != null) event.setTime(dto.getTime());
+        if (dto.getEventDate() != null) event.setDate(dto.getEventDate());
+        if (dto.getEventTime()!= null) event.setTime(dto.getEventTime());
         if (dto.getDescription() != null) event.setDescription(dto.getDescription());
 
         event = eventRepo.save(event);
 
-        return mapper.map(event, EventDTO.class);
+        return mapper.map(event, EventResponseDTO.class);
     }
 
     @Override
-    public EventDTO getById(Long id) {
+    public EventResponseDTO getById(Long id) {
         Events event = eventRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        return mapper.map(event, EventDTO.class);
+        return mapper.map(event, EventResponseDTO.class);
     }
 
     @Override
-    public List<EventDTO> getUserEvents(Long userId) {
+    public List<EventResponseDTO> getUserEvents(Long userId) {
         List<Events> events = eventRepo.findByUserId(userId);
 
         return events.stream()
-                .map(event -> mapper.map(event, EventDTO.class))
+                .map(event -> mapper.map(event, EventResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<EventDTO> getAllEvents() {
+    public List<EventResponseDTO> getAllEvents() {
         return eventRepo.findAll().stream()
-                .map(event -> mapper.map(event, EventDTO.class))
+                .map(event -> mapper.map(event, EventResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EventDTO approveEvent(Long id) {
+    public EventResponseDTO approveEvent(Long id) {
         Events event = eventRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         event.setApproved(true);    // Mark as approved
 
         event = eventRepo.save(event);
-        return mapper.map(event, EventDTO.class);
+        return mapper.map(event, EventResponseDTO.class);
     }
 
     @Override
-    public EventDTO rejectEvent(Long id) {
+    public EventResponseDTO rejectEvent(Long id) {
         Events event = eventRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         event.setApproved(false);   // Mark as rejected
 
         event = eventRepo.save(event);
-        return mapper.map(event, EventDTO.class);
+        return mapper.map(event, EventResponseDTO.class);
     }
 }

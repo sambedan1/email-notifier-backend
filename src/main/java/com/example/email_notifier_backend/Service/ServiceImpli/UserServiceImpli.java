@@ -1,3 +1,79 @@
+////package com.example.email_notifier_backend.Service.ServiceImpli;
+////
+////import com.example.email_notifier_backend.Dto.UserDTO;
+////import com.example.email_notifier_backend.Entity.User;
+////import com.example.email_notifier_backend.Repository.UserRepository;
+////import com.example.email_notifier_backend.Service.UserService;
+////import com.example.email_notifier_backend.util.Role;
+////import lombok.AllArgsConstructor;
+////import org.modelmapper.ModelMapper;
+//////import org.springframework.security.crypto.password.PasswordEncoder;
+////import org.springframework.stereotype.Service;
+////
+////@AllArgsConstructor
+////@Service
+////public class UserServiceImpli implements UserService {
+////    private final UserRepository userRepo;
+////    //private final PasswordEncoder passwordEncoder;
+////    private final ModelMapper mapper;
+////
+////    @Override
+////    public UserDTO register(UserDTO dto) {
+////        User user = mapper.map(dto, User.class);
+////
+////       // user.setPassword(passwordEncoder.encode(dto.getPassword()));
+////        user.setRole(Role.valueOf("USER")); // default role
+////
+////        user = userRepo.save(user);
+////        return mapper.map(user, UserDTO.class);
+////    }
+////
+////    @Override
+////    public UserDTO login(String email, String password) {
+////        User user = userRepo.findByEmail(email)
+////                .orElseThrow(() -> new RuntimeException("Invalid email"));
+////
+//////        if (!passwordEncoder.matches(password, user.getPassword())) {
+//////            throw new RuntimeException("Invalid password");
+//////        }
+////
+////        return mapper.map(user, UserDTO.class);
+////    }
+////
+////    @Override
+////    public String generatePasswordResetToken(String email) {
+////        return "";
+////    }
+////
+////    @Override
+////    public String resetPassword(String token, String newPassword) {
+////        return "";
+////    }
+////
+////    @Override
+////    public UserDTO getById(Long id) {
+////        User user = userRepo.findById(id)
+////                .orElseThrow(() -> new RuntimeException("User not found"));
+////
+////        return mapper.map(user, UserDTO.class);
+////    }
+////
+////    @Override
+////    public UserDTO update(Long id, UserDTO dto) {
+////        User user = userRepo.findById(id)
+////                .orElseThrow(() -> new RuntimeException("User not found"));
+////
+////        if (dto.getName() != null)
+////            user.setName(dto.getName());
+////
+////        if (dto.getPassword() != null)
+////            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+////
+////        user = userRepo.save(user);
+////
+////        return mapper.map(user, UserDTO.class);
+////    }
+////}
 //package com.example.email_notifier_backend.Service.ServiceImpli;
 //
 //import com.example.email_notifier_backend.Dto.UserDTO;
@@ -7,25 +83,33 @@
 //import com.example.email_notifier_backend.util.Role;
 //import lombok.AllArgsConstructor;
 //import org.modelmapper.ModelMapper;
-////import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.stereotype.Service;
+//
 //
 //@AllArgsConstructor
 //@Service
 //public class UserServiceImpli implements UserService {
 //    private final UserRepository userRepo;
-//    //private final PasswordEncoder passwordEncoder;
 //    private final ModelMapper mapper;
 //
 //    @Override
 //    public UserDTO register(UserDTO dto) {
-//        User user = mapper.map(dto, User.class);
+//        if (userRepo.existsByEmail(dto.getEmail())) {
+//            throw new RuntimeException("Email already registered");
+//        }
 //
-//       // user.setPassword(passwordEncoder.encode(dto.getPassword()));
-//        user.setRole(Role.valueOf("USER")); // default role
+//        User user = new User();
+//        user.setName(dto.getName());
+//        user.setEmail(dto.getEmail());
+//        user.setPassword(dto.getPassword()); // plain text for now
+//        user.setRole(Role.ROLE_USER);
+//        user.setEnabled(true);
 //
 //        user = userRepo.save(user);
-//        return mapper.map(user, UserDTO.class);
+//
+//        UserDTO out = mapper.map(user, UserDTO.class);
+//        //out.setPassword(null); // do not return password
+//        return out;
 //    }
 //
 //    @Override
@@ -33,20 +117,24 @@
 //        User user = userRepo.findByEmail(email)
 //                .orElseThrow(() -> new RuntimeException("Invalid email"));
 //
-////        if (!passwordEncoder.matches(password, user.getPassword())) {
-////            throw new RuntimeException("Invalid password");
-////        }
+//        if (!user.getPassword().equals(password)) {
+//            throw new RuntimeException("Invalid password");
+//        }
 //
-//        return mapper.map(user, UserDTO.class);
+//        UserDTO out = mapper.map(user, UserDTO.class);
+//        //out.setPassword(null);
+//        return out;
 //    }
 //
 //    @Override
 //    public String generatePasswordResetToken(String email) {
+//        // placeholder - implement later
 //        return "";
 //    }
 //
 //    @Override
 //    public String resetPassword(String token, String newPassword) {
+//        // placeholder - implement later
 //        return "";
 //    }
 //
@@ -55,7 +143,9 @@
 //        User user = userRepo.findById(id)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
 //
-//        return mapper.map(user, UserDTO.class);
+//        UserDTO out = mapper.map(user, UserDTO.class);
+//        //out.setPassword(null);
+//        return out;
 //    }
 //
 //    @Override
@@ -63,15 +153,19 @@
 //        User user = userRepo.findById(id)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
 //
-//        if (dto.getName() != null)
-//            user.setName(dto.getName());
-//
-//        if (dto.getPassword() != null)
-//            user.setPassword(passwordEncoder.encode(dto.getPassword()));
-//
+//        if (dto.getName() != null) user.setName(dto.getName());
+//        if (dto.getEmail() != null && !dto.getEmail().equals(user.getEmail())) {
+//            if (userRepo.existsByEmail(dto.getEmail())) {
+//                throw new RuntimeException("Email already in use");
+//            }
+//            user.setEmail(dto.getEmail());
+//        }
+//        // do not update password here unless you want to allow it
 //        user = userRepo.save(user);
 //
-//        return mapper.map(user, UserDTO.class);
+//        UserDTO out = mapper.map(user, UserDTO.class);
+//        //out.setPassword(null);
+//        return out;
 //    }
 //}
 package com.example.email_notifier_backend.Service.ServiceImpli;
@@ -83,13 +177,16 @@ import com.example.email_notifier_backend.Service.UserService;
 import com.example.email_notifier_backend.util.Role;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
 public class UserServiceImpli implements UserService {
+
     private final UserRepository userRepo;
     private final ModelMapper mapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO register(UserDTO dto) {
@@ -100,14 +197,14 @@ public class UserServiceImpli implements UserService {
         User user = new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword()); // plain text for now
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));  // 🔥 encode!
         user.setRole(Role.ROLE_USER);
         user.setEnabled(true);
 
         user = userRepo.save(user);
 
         UserDTO out = mapper.map(user, UserDTO.class);
-        out.setPassword(null); // do not return password
+        out.setPassword(null);
         return out;
     }
 
@@ -116,7 +213,7 @@ public class UserServiceImpli implements UserService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Invalid email"));
 
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) { // 🔥 match encoded
             throw new RuntimeException("Invalid password");
         }
 
@@ -127,13 +224,11 @@ public class UserServiceImpli implements UserService {
 
     @Override
     public String generatePasswordResetToken(String email) {
-        // placeholder - implement later
         return "";
     }
 
     @Override
     public String resetPassword(String token, String newPassword) {
-        // placeholder - implement later
         return "";
     }
 
@@ -153,13 +248,14 @@ public class UserServiceImpli implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (dto.getName() != null) user.setName(dto.getName());
+
         if (dto.getEmail() != null && !dto.getEmail().equals(user.getEmail())) {
             if (userRepo.existsByEmail(dto.getEmail())) {
                 throw new RuntimeException("Email already in use");
             }
             user.setEmail(dto.getEmail());
         }
-        // do not update password here unless you want to allow it
+
         user = userRepo.save(user);
 
         UserDTO out = mapper.map(user, UserDTO.class);
@@ -167,3 +263,5 @@ public class UserServiceImpli implements UserService {
         return out;
     }
 }
+
+

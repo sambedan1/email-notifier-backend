@@ -15,7 +15,7 @@ package com.example.email_notifier_backend.Configuration;
 ////}
 //
 //
-import com.example.email_notifier_backend.Dto.EventDTO;
+import com.example.email_notifier_backend.Dto.EventResponseDTO;
 import com.example.email_notifier_backend.Dto.NotificationDTO;
 import com.example.email_notifier_backend.Entity.Events;
 import com.example.email_notifier_backend.Entity.NotificationLog;
@@ -33,18 +33,16 @@ public class ModelMapperConfig {
         ModelMapper mapper = new ModelMapper();
 
         // Events -> EventDTO mapping: set userId from event.user.id
-        mapper.addConverter(new AbstractConverter<Events, EventDTO>() {
+        mapper.addConverter(new AbstractConverter<Events, EventResponseDTO>() {
             @Override
-            protected EventDTO convert(Events source) {
+            protected EventResponseDTO convert(Events source) {
                 if (source == null) return null;
-                EventDTO dto = new EventDTO();
-                dto.setId(source.getId());
+                EventResponseDTO dto = new EventResponseDTO();
                 dto.setTitle(source.getTitle());
                 dto.setDate(source.getDate());
                 dto.setTime(source.getTime());
                 dto.setDescription(source.getDescription());
                 dto.setApproved(source.isApproved());
-                if (source.getUser() != null) dto.setUserId(source.getUser().getId());
                 return dto;
             }
         });
