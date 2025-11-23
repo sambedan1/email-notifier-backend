@@ -1,66 +1,12 @@
-25-11-21 14:10:01.821 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=28m28s691ms397µs400ns). 
-25-11-21 14:10:20.210 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
-25-11-21 14:10:20.211 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete 
-25-11-21 14:10:20.226 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete 
-25-11-21 14:10:20.226 [SpringApplicationShutdownHook] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
-25-11-21 14:10:20.226 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutting down. 
-25-11-21 14:10:20.226 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
-25-11-21 14:10:20.226 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutdown complete. 
-25-11-21 14:10:20.235 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
-25-11-21 14:10:20.242 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated... 
-25-11-21 14:10:20.242 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed. 
-25-11-21 14:10:22.350 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final 
-25-11-21 14:10:22.401 [restartedMain] INFO  c.e.e.EmailNotifierBackendApplication - Starting EmailNotifierBackendApplication using Java 21.0.9 with PID 23240 (C:\Users\Admin\Desktop\NOTIFICATION HUB\email-notifier-backend\email-notifier-backend\target\classes started by Admin in C:\Users\Admin\Desktop\NOTIFICATION HUB\email-notifier-backend\email-notifier-backend) 
-25-11-21 14:10:22.401 [restartedMain] INFO  c.e.e.EmailNotifierBackendApplication - No active profile set, falling back to 1 default profile: "default" 
-25-11-21 14:10:22.473 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable 
-25-11-21 14:10:22.473 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG' 
-25-11-21 14:10:23.379 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode. 
-25-11-21 14:10:23.442 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 3 JPA repository interfaces. 
-25-11-21 14:10:23.997 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http) 
-25-11-21 14:10:24.018 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"] 
-25-11-21 14:10:24.018 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat] 
-25-11-21 14:10:24.018 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48] 
-25-11-21 14:10:24.077 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext 
-25-11-21 14:10:24.077 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1604 ms 
-25-11-21 14:10:24.250 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default] 
-25-11-21 14:10:24.298 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.33.Final 
-25-11-21 14:10:24.332 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled 
-25-11-21 14:10:24.646 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer 
-25-11-21 14:10:24.678 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting... 
-25-11-21 14:10:24.837 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@61626b3c 
-25-11-21 14:10:24.837 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed. 
-25-11-21 14:10:24.916 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default) 
-25-11-21 14:10:24.948 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 8.0.44
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown 
-25-11-21 14:10:25.792 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration) 
-25-11-21 14:10:25.898 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default' 
-25-11-21 14:10:26.250 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used. 
-25-11-21 14:10:26.741 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService 
-25-11-21 14:10:26.844 [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor 
-25-11-21 14:10:26.853 [restartedMain] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v2.5.0 created. 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized. 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.5.0) 'schedulerFactoryBean' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
- 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'schedulerFactoryBean' initialized from an externally provided properties instance. 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.5.0 
-25-11-21 14:10:26.853 [restartedMain] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: com.example.email_notifier_backend.quartz.job.QuartzConfig$1@73d3d5cc 
-25-11-21 14:10:26.974 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning 
-25-11-21 14:10:27.525 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729 
-25-11-21 14:10:27.534 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"] 
-25-11-21 14:10:27.554 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/' 
-25-11-21 14:10:27.554 [restartedMain] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
-25-11-21 14:10:27.554 [restartedMain] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED started. 
-25-11-21 14:10:27.567 [restartedMain] INFO  c.e.e.EmailNotifierBackendApplication - Started EmailNotifierBackendApplication in 5.486 seconds (process running for 6.151) 
+25-11-21 17:13:23.217 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19m24s760ms938µs500ns). 
+25-11-21 17:13:28.900 [http-nio-8080-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/sign.] 
+25-11-21 17:13:52.776 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
+25-11-21 17:13:52.776 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete 
+25-11-21 17:13:52.779 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete 
+25-11-21 17:13:52.779 [SpringApplicationShutdownHook] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+25-11-21 17:13:52.779 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutting down. 
+25-11-21 17:13:52.779 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused. 
+25-11-21 17:13:52.779 [SpringApplicationShutdownHook] INFO  org.quartz.core.QuartzScheduler - Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutdown complete. 
+25-11-21 17:13:52.790 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+25-11-21 17:13:52.805 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated... 
+25-11-21 17:13:52.807 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed. 
