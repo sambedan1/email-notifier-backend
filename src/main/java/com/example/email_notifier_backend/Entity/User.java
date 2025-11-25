@@ -38,6 +38,8 @@ import com.example.email_notifier_backend.util.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Data @NoArgsConstructor @AllArgsConstructor
@@ -58,7 +60,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
-    private Role role = Role.ROLE_USER;
+    private Role role ;
 
-    private boolean enabled = true;
+    @OneToMany(mappedBy = "user")
+    private Set<Events> events;
 }

@@ -6,34 +6,30 @@ import com.example.email_notifier_backend.Service.EventService;
 
 import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/events")
-@RequiredArgsConstructor
+@RequestMapping("/api/user/events")
 public class EventController {
+    @Autowired
+    private EventService eventService;
 
-    private final EventService eventService;
-
-    @PostMapping
-    public EventResponseDTO createEvent( @RequestParam Long userId,@RequestBody CreateEventDTO dto) {
-        return eventService.create(userId,dto);
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/")
+    public EventResponseDTO createEvent(@RequestBody CreateEventDTO dto, Authentication auth) {
+        return eventService.createEvent(dto, auth.getName());
     }
 
-    @PutMapping("/{id}")
-    public EventResponseDTO updateEvent(@PathVariable Long id, @RequestBody CreateEventDTO dto) {
-        return eventService.update(id, dto);
-    }
-
-    @GetMapping("/{id}")
-    public EventResponseDTO getEvent(@PathVariable Long id) {
-        return eventService.getById(id);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<EventResponseDTO> getUserEvents(@PathVariable Long userId) {
-        return eventService.getUserEvents(userId);
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/")
+    public List<EventResponseDTO> getEvents(Authentication auth) {
+        return eventService.getUserEvents(auth.getName());
     }
 }

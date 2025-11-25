@@ -1,43 +1,58 @@
 package com.example.email_notifier_backend.Service.ServiceImpli;
 
 import com.example.email_notifier_backend.Entity.Events;
+import com.example.email_notifier_backend.Entity.NotificationLog;
 import com.example.email_notifier_backend.Repository.EventsRepository;
+import com.example.email_notifier_backend.Repository.NotificationLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.quartz.JobExecutionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class EventReminderJob extends QuartzJobBean {
 
-    private final EventsRepository eventRepository;
-    private final EmailService emailService;
+    @Autowired
+    private  ReminderService reminderService;
+    @Autowired
+    private  EmailService emailService;
+    @Autowired
+    private  NotificationLogRepository notificationLogRepository;
 
     @Override
-    public void executeInternal(JobExecutionContext context){
-        // LocalDate reminderDate = events.getDate().minusDays(5);
-        LocalDate today = LocalDate.now();
-
-        List<Events> events = eventRepository.findAllByEmailSentTrue();
+    protected void executeInternal(JobExecutionContext context) {
+        LocalDate reminderDate = LocalDate.now().plusDays(5);
+        List<Events> events = reminderService.getEventsWithRecipients(reminderDate);
 
         for (Events event : events) {
-            LocalDate reminderDate = event.getDate().minusDays(5);
+            if (event.getRecipientEmails() != null) {
+                for (String email : event.getRecipientEmails()) {
+                    try {
+                        String subject = "Reminder: " + event.getTitle();
+                        String body = "Event scheduled on " + event.getDate() + " at " + event.getTime() + "\n\nDetails:\n" + event.getDescription();
+                        emailService.sendEmail(email, subject, body);
 
-            if (today.equals(reminderDate)) {
-                String subject = "Event Reminder: " + event.getTitle();
-                String body = "Hello " + event.getUser().getName() + ",\n\n" +
-                        "This is a reminder for your event \"" + event.getTitle() + "\" scheduled on " + event.getDate() + "." +
-                        (event.getDescription() != null ? "\n\nDescription: " + event.getDescription() : "");
-
-                emailService.sendEmail(event.getUser().getEmail(), subject, body);
-                System.out.println("📩 Reminder sent for event: " + event.getTitle());
+                        NotificationLog log = new NotificationLog();
+                        log.setEvent(event);
+                        log.setRecipientEmail(email);
+                        log.setStatus("SENT");
+                        log.setSentTimestamp(LocalDateTime.now());
+                        notificationLogRepository.save(log);
+                    } catch (Exception e) {
+                        NotificationLog log = new NotificationLog();
+                        log.setEvent(event);
+                        log.setRecipientEmail(email);
+                        log.setStatus("FAILED");
+                        log.setSentTimestamp(LocalDateTime.now());
+                        notificationLogRepository.save(log);
+                    }
+                }
             }
-            event.setApproved(true);
-            eventRepository.save(event);
         }
     }
 }

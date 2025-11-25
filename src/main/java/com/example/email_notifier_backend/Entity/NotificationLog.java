@@ -9,17 +9,18 @@ import java.time.LocalDateTime;
 @Table(name = "notification_logs")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class NotificationLog {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String status; // "PENDING", "SENT", etc.
+    private LocalDateTime sentTimestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Events event;
 
-    @Column(nullable=false)
-    private String status;
-
-    private LocalDateTime sentTimestamp;
-
-    private int attempts;
+    // recipient email for tracking
+    @Column(name = "recipient_email")
+    private String recipientEmail;
 }

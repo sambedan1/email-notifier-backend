@@ -1,8 +1,6 @@
 package com.example.email_notifier_backend.Service.ServiceImpli;
 
-import com.example.email_notifier_backend.report.DailyReportJob;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,33 +11,24 @@ public class QuartzSchedulerService {
     private  Scheduler scheduler;
 
     @PostConstruct
-    public void scheduleDailyReportJob() throws SchedulerException {
+    public void scheduleEventReminderJob() throws SchedulerException {
+        JobKey jobKey = new JobKey("eventReminderJob");
+        TriggerKey triggerKey = new TriggerKey("eventReminderTrigger");
 
-        System.out.println("🔥 QuartzSchedulerService @PostConstruct RUNNING...");
-
-
-        JobKey jobKey = new JobKey("dailyReportJob");
-        TriggerKey triggerKey = new TriggerKey("dailyReportTrigger");
-
-        // Delete existing job (important for devtools restarts)
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
-            System.out.println("🔥 Deleted old job before scheduling new one");
         }
 
-
-        JobDetail job = JobBuilder.newJob(DailyReportJob.class)
-                .withIdentity("dailyReportJob")
+        JobDetail job = JobBuilder.newJob(EventReminderJob.class)
+                .withIdentity(jobKey)
                 .storeDurably()
                 .build();
 
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity("dailyReportTrigger")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 8 * * ?"))
+                .withIdentity(triggerKey)
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * * * ?")) // every day at 08:00
                 .build();
 
         scheduler.scheduleJob(job, trigger);
-
-        System.out.println("🔥 Scheduled dailyReportJob successfully!");
     }
 }

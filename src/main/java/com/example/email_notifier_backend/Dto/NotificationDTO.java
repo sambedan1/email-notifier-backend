@@ -19,9 +19,10 @@ import java.time.LocalDateTime;
 @Data
 public class NotificationDTO {
     private Long id;
-    private String email;
     private String subject;
     private String status;
     private LocalDateTime sentAt;
+    private String recipientEmail;
+    private String eventTitle;
 }
 

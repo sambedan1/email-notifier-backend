@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -20,26 +21,21 @@ public class Events {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String title;
-
-    private String occasion;
-
-    @Column(nullable = false)
-    private LocalDate date;
-
-    @Column(nullable = false)
-    private LocalTime time;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
+    private LocalDate date;
+    private LocalTime time;
+    private boolean approved; // For admin or workflow
 
-    private boolean approved = false;
-
-    @Column(name = "email_sent")
-    private boolean emailSent = false;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; // event creator
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "event_recipients", joinColumns = @JoinColumn(name = "event_id"))
+    @Column(name = "email")
+    private Set<String> recipientEmails;
+
+    @OneToMany(mappedBy = "event")
+    private Set<NotificationLog> notifications;
 }

@@ -19,91 +19,37 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EventServiceImpli implements EventService {
-    private final EventsRepository eventRepo;
-    private final UserRepository userRepo;
-    private final ModelMapper mapper;
-
-
+    @Autowired private EventsRepository eventRepo;
+    @Autowired private UserRepository userRepo;
+    @Autowired private ModelMapper modelMapper;
 
     @Override
-    public EventResponseDTO create(Long id,CreateEventDTO dto) {
-
-        // Convert DTO → Entity
-        Events event = mapper.map(dto, Events.class);
-
-        // Fetch user from database
-        User user = userRepo.findById((id))
+    public EventResponseDTO createEvent(CreateEventDTO dto, String userEmail) {
+        User user = userRepo.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        Events event = modelMapper.map(dto, Events.class);
         event.setUser(user);
-        event.setApproved(false);  // new events are not approved by default
+        Events saved = eventRepo.save(event);
 
-        // Save event
-        event = eventRepo.save(event);
+        EventResponseDTO response = modelMapper.map(event, EventResponseDTO.class);
+        response.setUserId(event.getUser() != null ? event.getUser().getId() : null);
+        return response;
 
-        // Convert Entity → DTO
-        return mapper.map(event, EventResponseDTO.class);
     }
 
     @Override
-    public EventResponseDTO update(Long id, CreateEventDTO dto) {
-        Events event = eventRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        // Update allowed fields
-        if (dto.getTitle() != null) event.setTitle(dto.getTitle());
-        if (dto.getEventDate() != null) event.setDate(dto.getEventDate());
-        if (dto.getEventTime()!= null) event.setTime(dto.getEventTime());
-        if (dto.getDescription() != null) event.setDescription(dto.getDescription());
-
-        event = eventRepo.save(event);
-
-        return mapper.map(event, EventResponseDTO.class);
-    }
-
-    @Override
-    public EventResponseDTO getById(Long id) {
-        Events event = eventRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        return mapper.map(event, EventResponseDTO.class);
-    }
-
-    @Override
-    public List<EventResponseDTO> getUserEvents(Long userId) {
-        List<Events> events = eventRepo.findByUserId(userId);
-
-        return events.stream()
-                .map(event -> mapper.map(event, EventResponseDTO.class))
+    public List<EventResponseDTO> getUserEvents(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return eventRepo.findByUser(user).stream()
+                .map(e -> modelMapper.map(e, EventResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<EventResponseDTO> getAllEvents() {
         return eventRepo.findAll().stream()
-                .map(event -> mapper.map(event, EventResponseDTO.class))
+                .map(e -> modelMapper.map(e, EventResponseDTO.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public EventResponseDTO approveEvent(Long id) {
-        Events event = eventRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        event.setApproved(true);    // Mark as approved
-
-        event = eventRepo.save(event);
-        return mapper.map(event, EventResponseDTO.class);
-    }
-
-    @Override
-    public EventResponseDTO rejectEvent(Long id) {
-        Events event = eventRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        event.setApproved(false);   // Mark as rejected
-
-        event = eventRepo.save(event);
-        return mapper.map(event, EventResponseDTO.class);
     }
 }

@@ -9,6 +9,8 @@ import com.example.email_notifier_backend.Security.JwtUtil;
 import com.example.email_notifier_backend.Service.UserService;
 import com.example.email_notifier_backend.util.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,33 +19,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepo;
-    private final PasswordEncoder encoder;
-    private final JwtUtil jwt;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/signup")
-    public AuthResponseDTO signup(@RequestBody AuthRequestDTO dto){
-        if(userRepo.findByEmail(dto.getEmail()).isPresent()){
-            throw new RuntimeException("Email already exists");
-        }
-        User u = User.builder()
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .password(encoder.encode(dto.getPassword()))
-                .role(Role.ROLE_USER)
-                .build();
-        userRepo.save(u);
-        String token = jwt.generateToken(u.getEmail());
-        return new AuthResponseDTO(token,u.getName(),u.getEmail());
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody AuthRequestDTO dto) {
+        AuthResponseDTO response = userService.register(dto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signin")
-    public  String signin(@RequestBody AuthRequestDTO req) {
-        var user = userRepo.findByEmail(req.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid creds"));
-        if(!encoder.matches(req.getPassword(), user.getPassword()))
-            throw new RuntimeException("Invalid creds");
-        String token = jwt.generateToken(user.getEmail());
-        return "Sign-in successful";
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO dto) {
+        AuthResponseDTO response = userService.login(dto);
+        return ResponseEntity.ok(response);
     }
 }

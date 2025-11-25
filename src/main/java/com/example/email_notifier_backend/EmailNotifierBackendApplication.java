@@ -84,10 +84,8 @@ public class EmailNotifierBackendApplication {
                 User admin = new User();
                 admin.setName(ADMIN_NAME);
                 admin.setEmail(ADMIN_EMAIL);
-                // Encode password before saving
                 admin.setPassword(passwordEncoder.encode(ADMIN_PASSWORD));
-                admin.setRole(Role.ROLE_ADMIN);
-                admin.setEnabled(true);
+                admin.setRole(Role.ROLE_ADMIN); // Should resolve to "ROLE_ADMIN"
                 userRepository.save(admin);
                 System.out.println("Created admin user: " + ADMIN_EMAIL);
             });

@@ -1,18 +1,15 @@
 package com.example.email_notifier_backend.Service;
 
+import com.example.email_notifier_backend.Dto.AuthRequestDTO;
+import com.example.email_notifier_backend.Dto.AuthResponseDTO;
 import com.example.email_notifier_backend.Dto.UserDTO;
+import com.example.email_notifier_backend.Dto.UserResponseDTO;
 
 public interface UserService {
-    UserDTO register(UserDTO dto);
 
-    UserDTO login(String email, String password);
-
-    String generatePasswordResetToken(String email);
-
-    String resetPassword(String token, String newPassword);
-
-    UserDTO getById(Long id);
-
-    UserDTO update(Long id, UserDTO dto);
     //UserDTO create(UserDTO dto);
+    AuthResponseDTO register(AuthRequestDTO dto);
+    AuthResponseDTO login(AuthRequestDTO dto);
+    UserResponseDTO getProfile(String email);
+    Long getUserIdFromEmail(String email);
 }
