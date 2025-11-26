@@ -26,7 +26,7 @@ public class QuartzSchedulerService {
 
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(triggerKey)
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * * * ?")) // every day at 08:00
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 10 * * ?")) // every day at 08:00
                 .build();
 
         scheduler.scheduleJob(job, trigger);
